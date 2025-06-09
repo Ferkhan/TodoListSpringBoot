@@ -27,4 +27,9 @@ $ java -jar target/mads-todolist-inicial-0.0.1-SNAPSHOT.jar
 Una vez lanzada la aplicación puedes abrir un navegador y probar la página de inicio:
 
 - [http://localhost:8080/login](http://localhost:8080/login)
+- 
 # TodoListSpringBoot
+
+## Enlace Trello
+
+[Link para observar el Trello](https://trello.com/invite/b/68410caf089a629f0e720d8a/ATTI2595a5751e1c6ac715162776aeb6a3cb166080BD/todolist-epn)
