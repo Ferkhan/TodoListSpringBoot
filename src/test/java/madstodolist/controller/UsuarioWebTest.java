@@ -129,4 +129,19 @@ public class UsuarioWebTest {
                                 .andExpect(content().string(containsString("uno@correo.com")))
                                 .andExpect(content().string(containsString("dos@correo.com")));
         }
+
+        @Test
+        public void descripcionUsuarioDevuelveVistaConDatos() throws Exception {
+                UsuarioData usuario = new UsuarioData();
+                usuario.setId(1L);
+                usuario.setEmail("test@correo.com");
+                usuario.setNombre("Test User");
+
+                when(usuarioService.findById(1L)).thenReturn(usuario);
+
+                mockMvc.perform(get("/registrados/1"))
+                                .andExpect(status().isOk())
+                                .andExpect(content().string(containsString("test@correo.com")))
+                                .andExpect(content().string(containsString("Test User")));
+        }
 }
