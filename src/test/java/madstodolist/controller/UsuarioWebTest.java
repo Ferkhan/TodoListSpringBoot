@@ -96,8 +96,11 @@ public class UsuarioWebTest {
 
         @Test
         public void getCuentaUsuarioDevuelveVistaCuenta() throws Exception {
+                
                 UsuarioData usuario = new UsuarioData();
+
                 usuario.setId(1L);
+                
                 usuario.setNombre("Usuario Ejemplo");
 
                 when(usuarioService.findById(1L)).thenReturn(usuario);
