@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,7 +66,6 @@ public class UsuarioTest {
         assertThat(usuario1).isEqualTo(usuario2);
         assertThat(usuario1).isNotEqualTo(usuario3);
     }
-
 
     @Test
     public void comprobarIgualdadUsuariosConId() {
@@ -170,5 +170,28 @@ public class UsuarioTest {
         // se obtiene el usuario correcto.
 
         assertThat(usuarioBD.getNombre()).isEqualTo("Usuario Ejemplo");
+    }
+
+    @Test
+    public void findAllDevuelveUsuarios() {
+        Usuario usuario = new Usuario();
+        usuario.setEmail("test@correo.com");
+        usuario.setPassword("1234");
+        usuarioRepository.save(usuario);
+
+        Iterable<Usuario> usuarios = usuarioRepository.findAll();
+        assertThat(usuarios).isNotEmpty();
+    }
+
+    @Test
+    public void findByEmailDevuelveUsuarioCorrecto() {
+        Usuario usuario = new Usuario();
+        usuario.setEmail("otro@correo.com");
+        usuario.setPassword("abcd");
+        usuarioRepository.save(usuario);
+
+        Optional<Usuario> encontrado = usuarioRepository.findByEmail("otro@correo.com");
+        assertThat(encontrado).isPresent();
+        assertThat(encontrado.get().getEmail()).isEqualTo("otro@correo.com");
     }
 }

@@ -14,6 +14,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.Arrays;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 //
@@ -96,11 +98,11 @@ public class UsuarioWebTest {
 
         @Test
         public void getCuentaUsuarioDevuelveVistaCuenta() throws Exception {
-                
+
                 UsuarioData usuario = new UsuarioData();
 
                 usuario.setId(1L);
-                
+
                 usuario.setNombre("Usuario Ejemplo");
 
                 when(usuarioService.findById(1L)).thenReturn(usuario);
@@ -109,5 +111,22 @@ public class UsuarioWebTest {
                                 .andExpect(status().isOk())
                                 .andExpect(content().string(containsString("Gestión de cuenta")))
                                 .andExpect(content().string(containsString("Usuario Ejemplo")));
+        }
+
+        @Test
+        public void listadoUsuariosDevuelveVistaConUsuarios() throws Exception {
+                UsuarioData usuario1 = new UsuarioData();
+                usuario1.setId(1L);
+                usuario1.setEmail("uno@correo.com");
+                UsuarioData usuario2 = new UsuarioData();
+                usuario2.setId(2L);
+                usuario2.setEmail("dos@correo.com");
+
+                when(usuarioService.findAllUsuarios()).thenReturn(Arrays.asList(usuario1, usuario2));
+
+                mockMvc.perform(get("/registrados"))
+                                .andExpect(status().isOk())
+                                .andExpect(content().string(containsString("uno@correo.com")))
+                                .andExpect(content().string(containsString("dos@correo.com")));
         }
 }

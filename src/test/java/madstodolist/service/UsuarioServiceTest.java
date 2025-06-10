@@ -1,6 +1,9 @@
 package madstodolist.service;
 
 import madstodolist.dto.UsuarioData;
+import madstodolist.model.Usuario;
+import madstodolist.repository.UsuarioRepository;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +12,17 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 @SpringBootTest
 @Sql(scripts = "/clean-db.sql")
 public class UsuarioServiceTest {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     // Método para inicializar los datos de prueba en la BD
     // Devuelve el identificador del usuario de la BD
@@ -152,5 +160,14 @@ public class UsuarioServiceTest {
         assertThat(usuario.getId()).isEqualTo(usuarioId);
         assertThat(usuario.getEmail()).isEqualTo("user@ua");
         assertThat(usuario.getNombre()).isEqualTo("Usuario Ejemplo");
+    }
+
+    @Test
+    public void findAllUsuariosDevuelveTodosLosUsuarios() {
+        addUsuarioBD(); // Añadimos el primer usuario
+
+        List<UsuarioData> usuarios = usuarioService.findAllUsuarios();
+        assertThat(usuarios).hasSize(1);
+        assertThat(usuarios).extracting("email").contains("user@ua");
     }
 }
