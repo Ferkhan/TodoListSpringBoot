@@ -5,7 +5,7 @@
 
     <groupId>epn.fn</groupId>
     <artifactId>epn-todolist-fernando-nagua</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
