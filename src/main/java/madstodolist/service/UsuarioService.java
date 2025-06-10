@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +19,9 @@ public class UsuarioService {
 
     Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
-    public enum LoginStatus {LOGIN_OK, USER_NOT_FOUND, ERROR_PASSWORD}
+    public enum LoginStatus {
+        LOGIN_OK, USER_NOT_FOUND, ERROR_PASSWORD
+    }
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -58,7 +62,8 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioData findByEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
-        if (usuario == null) return null;
+        if (usuario == null)
+            return null;
         else {
             return modelMapper.map(usuario, UsuarioData.class);
         }
@@ -67,9 +72,21 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioData findById(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
-        if (usuario == null) return null;
+        if (usuario == null)
+            return null;
         else {
             return modelMapper.map(usuario, UsuarioData.class);
         }
+    }
+
+    @Transactional(readOnly = true)
+
+    public List<UsuarioData> findAllUsuarios() {
+        List<UsuarioData> usuariosData = new ArrayList<>();
+        Iterable<Usuario> usuarios = usuarioRepository.findAll();
+        for (Usuario usuario : usuarios) {
+            usuariosData.add(modelMapper.map(usuario, UsuarioData.class));
+        }
+        return usuariosData;
     }
 }

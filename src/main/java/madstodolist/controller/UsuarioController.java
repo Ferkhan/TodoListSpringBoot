@@ -1,5 +1,7 @@
 package madstodolist.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +27,12 @@ public class UsuarioController {
         UsuarioData usuario = usuarioService.findById(idUsuario);
         model.addAttribute("usuario", usuario);
         return "cuentaUsuario";
+    }
+
+    @GetMapping("/registrados")
+    public String listadoUsuarios(Model model) {
+        List<UsuarioData> usuarios = usuarioService.findAllUsuarios();
+        model.addAttribute("usuarios", usuarios);
+        return "listaUsuarios";
     }
 }
