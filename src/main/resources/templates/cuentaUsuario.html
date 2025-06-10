@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head (titulo='Cuenta')"></head>
+
+<body>
+    <div th:replace="fragments :: navbar"></div>
+    <div class="container">
+        <h2>Gestión de cuenta (en construcción)</h2>
+        <p th:text="'Usuario: ' + ${usuario.nombre}"></p>
+    </div>
+</body>
+
+</html>
