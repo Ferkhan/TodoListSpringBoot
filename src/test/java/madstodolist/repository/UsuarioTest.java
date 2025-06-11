@@ -194,4 +194,28 @@ public class UsuarioTest {
         assertThat(encontrado).isPresent();
         assertThat(encontrado.get().getEmail()).isEqualTo("otro@correo.com");
     }
+
+    @Test
+    public void existsByAdminTrueDevuelveTrueSiHayAdmin() {
+        Usuario admin = new Usuario();
+        admin.setEmail("admin@correo.com");
+        admin.setPassword("adminpass");
+        admin.setAdmin(true);
+        usuarioRepository.save(admin);
+
+        boolean existeAdmin = usuarioRepository.existsByAdminTrue();
+        assertThat(existeAdmin).isTrue();
+    }
+
+    @Test
+    public void existsByAdminTrueDevuelveFalseSiNoHayAdmin() {
+        Usuario user = new Usuario();
+        user.setEmail("user@correo.com");
+        user.setPassword("userpass");
+        user.setAdmin(false);
+        usuarioRepository.save(user);
+
+        boolean existeAdmin = usuarioRepository.existsByAdminTrue();
+        assertThat(existeAdmin).isFalse();
+    }
 }
