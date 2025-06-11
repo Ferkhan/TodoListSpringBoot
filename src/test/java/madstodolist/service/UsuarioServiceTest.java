@@ -97,7 +97,6 @@ public class UsuarioServiceTest {
         });
     }
 
-
     @Test
     public void servicioRegistroUsuarioExcepcionConEmailRepetido() {
         // GIVEN
@@ -122,7 +121,8 @@ public class UsuarioServiceTest {
     public void servicioRegistroUsuarioDevuelveUsuarioConId() {
 
         // WHEN
-        // Si registramos en el sistema un usuario con un e-mail no existente en la base de datos,
+        // Si registramos en el sistema un usuario con un e-mail no existente en la base
+        // de datos,
         // y un password no nulo,
 
         UsuarioData usuario = new UsuarioData();
@@ -169,5 +169,27 @@ public class UsuarioServiceTest {
         List<UsuarioData> usuarios = usuarioService.findAllUsuarios();
         assertThat(usuarios).hasSize(1);
         assertThat(usuarios).extracting("email").contains("user@ua");
+    }
+
+    @Test
+    public void existeAdministradorDevuelveTrueSiHayAdmin() {
+        Usuario admin = new Usuario();
+        admin.setEmail("admin@correo.com");
+        admin.setPassword("adminpass");
+        admin.setAdmin(true);
+        usuarioRepository.save(admin);
+
+        assertThat(usuarioService.existeAdministrador()).isTrue();
+    }
+
+    @Test
+    public void existeAdministradorDevuelveFalseSiNoHayAdmin() {
+        Usuario user = new Usuario();
+        user.setEmail("user@correo.com");
+        user.setPassword("userpass");
+        user.setAdmin(false);
+        usuarioRepository.save(user);
+
+        assertThat(usuarioService.existeAdministrador()).isFalse();
     }
 }
