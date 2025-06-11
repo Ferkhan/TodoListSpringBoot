@@ -11,6 +11,7 @@ public class UsuarioData {
     private String nombre;
     private String password;
     private Date fechaNacimiento;
+    private Boolean admin = false;
 
     // Getters y setters
 
@@ -38,9 +39,13 @@ public class UsuarioData {
         this.nombre = nombre;
     }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password;
+    }
 
     public Date getFechaNacimiento() {
         return fechaNacimiento;
@@ -50,13 +55,23 @@ public class UsuarioData {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
     // Sobreescribimos equals y hashCode para que dos usuarios sean iguales
     // si tienen el mismo ID (ignoramos el resto de atributos)
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UsuarioData)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof UsuarioData))
+            return false;
         UsuarioData that = (UsuarioData) o;
         return Objects.equals(getId(), that.getId());
     }
