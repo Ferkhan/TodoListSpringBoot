@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import madstodolist.authentication.ManagerUserSession;
 import madstodolist.controller.exception.UsuarioNoAutorizadoException;
 import madstodolist.dto.UsuarioData;
 import madstodolist.service.UsuarioService;
@@ -20,6 +21,9 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    ManagerUserSession managerUserSession;
 
     @GetMapping("/cuenta")
     public String cuentaUsuario(Model model, HttpSession session) {
@@ -60,21 +64,23 @@ public class UsuarioController {
 
     @PostMapping("/registrados/{id}/bloquear")
     public String bloquearUsuario(@PathVariable("id") Long idUsuario) {
-        UsuarioData usuario = usuarioService.findById(idUsuario);
+        Long idAdmin = managerUserSession.usuarioLogeado();
+        UsuarioData usuarioAdmin = usuarioService.findById(idAdmin);
 
-        if (usuario == null || !Boolean.TRUE.equals(usuario.getAdmin())) {
+        if (usuarioAdmin == null || !Boolean.TRUE.equals(usuarioAdmin.getAdmin())) {
             throw new UsuarioNoAutorizadoException();
         }
-        
+
         usuarioService.bloquearUsuario(idUsuario);
         return "redirect:/registrados";
     }
 
     @PostMapping("/registrados/{id}/habilitar")
     public String habilitarUsuario(@PathVariable("id") Long idUsuario) {
-        UsuarioData usuario = usuarioService.findById(idUsuario);
+        Long idAdmin = managerUserSession.usuarioLogeado();
+        UsuarioData usuarioAdmin = usuarioService.findById(idAdmin);
 
-        if (usuario == null || !Boolean.TRUE.equals(usuario.getAdmin())) {
+        if (usuarioAdmin == null || !Boolean.TRUE.equals(usuarioAdmin.getAdmin())) {
             throw new UsuarioNoAutorizadoException();
         }
 

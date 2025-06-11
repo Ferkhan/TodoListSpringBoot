@@ -21,6 +21,14 @@
                     <td th:text="${usuario.email}"></td>
                     <td>
                         <a th:href="@{/registrados/{id}(id=${usuario.id})}">Ver descripción</a>
+                        <form th:action="@{/registrados/{id}/bloquear(id=${usuario.id})}" method="post"
+                            th:if="${!usuario.bloqueado}" style="display:inline;">
+                            <button class="btn btn-warning btn-sm" type="submit">Bloquear</button>
+                        </form>
+                        <form th:action="@{/registrados/{id}/habilitar(id=${usuario.id})}" method="post"
+                            th:if="${usuario.bloqueado}" style="display:inline;">
+                            <button class="btn btn-success btn-sm" type="submit">Habilitar</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>

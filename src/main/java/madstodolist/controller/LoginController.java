@@ -38,21 +38,18 @@ public class LoginController {
 
     @PostMapping("/login")
     public String loginSubmit(@ModelAttribute LoginData loginData, Model model, HttpSession session) {
-
-        // Llamada al servicio para comprobar si el login es correcto
         UsuarioService.LoginStatus loginStatus = usuarioService.login(loginData.geteMail(), loginData.getPassword());
 
         if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK) {
             UsuarioData usuario = usuarioService.findByEmail(loginData.geteMail());
-
             managerUserSession.logearUsuario(usuario.getId());
-
-            // Si el usuario es administrador, redirige a /registrados
             if (Boolean.TRUE.equals(usuario.getAdmin())) {
                 return "redirect:/registrados";
             }
-            
             return "redirect:/usuarios/" + usuario.getId() + "/tareas";
+        } else if (loginStatus == UsuarioService.LoginStatus.BLOCKED) {
+            model.addAttribute("error", "El usuario está bloqueado. Contacte con el administrador.");
+            return "formLogin";
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "formLogin";
