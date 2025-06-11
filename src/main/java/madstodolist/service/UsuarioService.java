@@ -45,6 +45,9 @@ public class UsuarioService {
     // El email no debe estar registrado en la base de datos
     @Transactional
     public UsuarioData registrar(UsuarioData usuario) {
+        if (usuario.getAdmin() != null && usuario.getAdmin() && existeAdministrador()) {
+            throw new UsuarioServiceException("Ya existe un administrador");
+        }
         Optional<Usuario> usuarioBD = usuarioRepository.findByEmail(usuario.getEmail());
         if (usuarioBD.isPresent())
             throw new UsuarioServiceException("El usuario " + usuario.getEmail() + " ya está registrado");
@@ -88,5 +91,10 @@ public class UsuarioService {
             usuariosData.add(modelMapper.map(usuario, UsuarioData.class));
         }
         return usuariosData;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existeAdministrador() {
+        return usuarioRepository.existsByAdminTrue();
     }
 }
